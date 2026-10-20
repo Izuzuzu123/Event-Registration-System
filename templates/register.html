@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .flash { padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .flash.error { background-color: #f8d7da; color: #721c24; }
+        .flash.success { background-color: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Sign up for our event</h2>
+        
+        <!-- Show Flash Messages (Errors/Success) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="POST">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="text" name="student_id" placeholder="Student Number" required>
+            
+            <!-- Dropdowns for strict inputs -->
+            <select name="year" required>
+                <option value="" disabled selected>Select Year Level</option>
+                <option value="First Year">First Year</option>
+                <option value="Second Year">Second Year</option>
+                <option value="Third Year">Third Year</option>
+                <option value="Fourth Year">Fourth Year</option>
+            </select>
+
+            <input type="text" name="section" placeholder="Section (e.g., 1A)" required>
+            
+            <select name="program" required>
+                <option value="" disabled selected>Select Program</option>
+                <option value="BSCS">BSCS</option>
+                <option value="BSIT">BSIT</option>
+            </select>
+
+            <input type="text" name="dept" placeholder="Department (e.g., CCS)" required>
+            
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+</body>
+</html>
