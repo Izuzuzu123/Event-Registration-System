@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Account management · LSPU{% endblock %}
+{% block content %}
+<section class="page-heading compact-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> ADMIN WORKSPACE</p><h1>Account directory<span>.</span></h1><p class="heading-description">Review existing student and professor accounts.</p></div></section>
+<div class="accounts-layout">
+  <section class="box accounts-list">
+      <div class="box-heading">
+          <p class="section-overline">DIRECTORY</p>
+          <h2>Existing accounts</h2>
+          <p>Account records currently available in the system.</p>
+      </div>
+      <div class="tablebox">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Role</th>
+                      <th>Email</th>
+                      <th>Section</th>
+                      <th>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for u in users %}
+                  <tr>
+                      <td><strong>{{ u.name }}</strong></td>
+                      <td><span class="table-tag">{{ u.role }}</span></td>
+                      <td>{{ u.email[:3] }}****{{ u.email.split('@')[1] if '@' in u.email else '' }}</td>
+                      <td>{{ u.section or u.handled_sections or '—' }}</td>
+                      <td class="actions">
+                          <a href="{{ url_for('account_edit', uid=u.id) }}">Edit</a>
+                          <form method="post" action="{{ url_for('account_delete', uid=u.id) }}" onsubmit="return confirm('Delete this account?')">
+                              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                              <button class="danger" type="submit">Delete</button>
+                          </form>
+                      </td>
+                  </tr>
+                  {% else %}
+                  <tr><td colspan="5">No accounts found.</td></tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+  </section>
+</div>
+{% endblock %}
